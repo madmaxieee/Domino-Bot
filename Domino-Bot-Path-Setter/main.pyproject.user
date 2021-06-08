@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 4.15.0, 2021-06-02T10:31:55. -->
+<!-- Written by QtCreator 4.15.0, 2021-06-02T12:16:33. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -478,6 +478,7 @@
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">C:/Users/cmsma/OneDrive - g.ntu.edu.tw/109-2 EECS design and implementation/Domino-Bot/Domino-Bot-Path-Setter/img/svg/example.svg</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/cmsma/OneDrive - g.ntu.edu.tw/109-2 EECS design and implementation/Domino-Bot/Domino-Bot-Path-Setter/img/svg/example.svg</value>
     <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/cmsma/OneDrive - g.ntu.edu.tw/109-2 EECS design and implementation/Domino-Bot/Domino-Bot-Path-Setter/img/svg/example.svg</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Interpreter">{96287ba1-5fcc-43f8-99e6-d3b335242181}</value>
     <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\cmsma\OneDrive - g.ntu.edu.tw\109-2 EECS design and implementation\Domino-Bot\Domino-Bot-Path-Setter\img\svg\example.svg</value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>

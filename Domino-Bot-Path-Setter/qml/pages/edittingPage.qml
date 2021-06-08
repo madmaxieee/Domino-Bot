@@ -5,7 +5,7 @@ import QtGraphicalEffects 1.15
 Item {
     id: item1
     Rectangle {
-        id: rectangle
+        id: bg
         color: "#2c313c"
         anchors.right: parent.right
         anchors.fill: parent
@@ -24,38 +24,6 @@ Item {
             font.pointSize: 16
             anchors.horizontalCenter: parent.horizontalCenter
             visible: false
-        }
-
-        Rectangle {
-            id: workSpace
-            color: "#00000000"
-            border.color: "#3494cb"
-            anchors.left: toolBar.right
-            anchors.right: parent.right
-            anchors.top: parent.top
-            anchors.bottom: parent.bottom
-            anchors.rightMargin: 10
-            anchors.leftMargin: 10
-            anchors.bottomMargin: 10
-            anchors.topMargin: 10
-
-            Image {
-                id: edittingSVG
-                source: "../../img/svg/example.svg"
-                sourceSize.width: 1920
-                sourceSize.height: 1080
-                fillMode: Image.PreserveAspectFit
-                visible: false
-                anchors.fill: parent
-            }
-
-            // change the color of the svg
-            ColorOverlay {
-                anchors.fill: edittingSVG
-                source: edittingSVG
-                color: "#ffffff"
-                antialiasing: true
-            }
         }
 
         Rectangle {
@@ -99,12 +67,45 @@ Item {
                 }
             }
         }
+
+        Rectangle {
+            id: workSpace
+            color: "#00000000"
+            border.color: "#3494cb"
+            anchors.left: toolBarBg.right
+            anchors.right: parent.right
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            anchors.rightMargin: 10
+            anchors.leftMargin: 10
+            anchors.bottomMargin: 10
+            anchors.topMargin: 10
+
+            Image {
+                id: edittingSVG
+                source: "../../img/svg/example.svg"
+                sourceSize.width: 1920
+                sourceSize.height: 1080
+                fillMode: Image.PreserveAspectFit
+                anchors.fill: parent
+                antialiasing: true
+                visible: false
+            }
+
+            // change the color of the svg
+            ColorOverlay {
+                anchors.fill: edittingSVG
+                source: edittingSVG
+                color: "#ffffff"
+                antialiasing: true
+            }
+        }
     }
 }
 
 /*##^##
 Designer {
-    D{i:0;autoSize:true;height:480;width:800}D{i:4}
+    D{i:0;autoSize:true;height:480;width:800}
 }
 ##^##*/
 
