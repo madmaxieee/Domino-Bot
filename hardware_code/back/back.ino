@@ -1,278 +1,310 @@
 // //0, 1, 2, 3        ->     右後輪
 // //A0, A1, A2, A3    ->     左後輪 (A0 -> pin 14)
-// //4, 5, 6, 7        ->     下推 
-// //8, 9, 10, 11      ->     上推 
+// //4, 5, 6, 7        ->     下推
+// //8, 9, 10, 11      ->     上推
 // //0, 1              ->     TX, RX
 // //12, 13            ->     連接後板
 
 
 void setup()
 {
-    //右前輪
-    pinMode(2,OUTPUT);
-    pinMode(3,OUTPUT);
-    pinMode(18,OUTPUT);
-    pinMode(19,OUTPUT);
+  //右前輪
+  delay(3000);
+  pinMode(2, OUTPUT);
+  pinMode(3, OUTPUT);
+  pinMode(18, OUTPUT);
+  pinMode(19, OUTPUT);
 
-    pinMode(4,OUTPUT);
-    pinMode(5,OUTPUT);
-    pinMode(6,OUTPUT);
-    pinMode(7,OUTPUT);
+  pinMode(4, OUTPUT);
+  pinMode(5, OUTPUT);
+  pinMode(6, OUTPUT);
+  pinMode(7, OUTPUT);
 
-    pinMode(8,OUTPUT);
-    pinMode(9,OUTPUT);
-    pinMode(10,OUTPUT);
-    pinMode(11,OUTPUT);
-    
-    //左前輪
-    pinMode(14,OUTPUT);
-    pinMode(15,OUTPUT);
-    pinMode(16,OUTPUT);
-    pinMode(17,OUTPUT);
+  pinMode(8, OUTPUT);
+  pinMode(9, OUTPUT);
+  pinMode(10, OUTPUT);
+  pinMode(11, OUTPUT);
 
-    Serial.begin(9600);
+  //左前輪
+  pinMode(14, OUTPUT);
+  pinMode(15, OUTPUT);
+  pinMode(16, OUTPUT);
+  pinMode(17, OUTPUT);
+
+  Serial.begin(9600);
 }
-int t = 1;
-
-void stepForward() 
-{
-
-  digitalWrite(2,1);
-  digitalWrite(3,0);
-  digitalWrite(18,0);
-  digitalWrite(19,0);
-  digitalWrite(14,1);
-  digitalWrite(15,0);
-  digitalWrite(16,0);
-  digitalWrite(17,0);
-  delay(t);
-
-  digitalWrite(2,1);
-  digitalWrite(3,1);
-  digitalWrite(18,0);
-  digitalWrite(19,0);
-  digitalWrite(14,1);
-  digitalWrite(15,1);
-  digitalWrite(16,0);
-  digitalWrite(17,0);
-  delay(t);
-
-  digitalWrite(2,0);
-  digitalWrite(3,1);
-  digitalWrite(18,0);
-  digitalWrite(19,0);
-  digitalWrite(14,0);
-  digitalWrite(15,1);
-  digitalWrite(16,0);
-  digitalWrite(17,0);
-  delay(t);
-
-  digitalWrite(2,0);
-  digitalWrite(3,1);
-  digitalWrite(18,1);
-  digitalWrite(19,0);
-  digitalWrite(14,0);
-  digitalWrite(15,1);
-  digitalWrite(16,1);
-  digitalWrite(17,0);
-  delay(t);
-
-  digitalWrite(2,0);
-  digitalWrite(3,0);
-  digitalWrite(18,1);
-  digitalWrite(19,0);
-  digitalWrite(14,0);
-  digitalWrite(15,0);
-  digitalWrite(16,1);
-  digitalWrite(17,0);
-  delay(t);
-
-  digitalWrite(2,0);
-  digitalWrite(3,0);
-  digitalWrite(18,1);
-  digitalWrite(19,1);
-  digitalWrite(14,0);
-  digitalWrite(15,1);
-  digitalWrite(16,1);
-  digitalWrite(17,0);
-  delay(t);
-
-  digitalWrite(2,0);
-  digitalWrite(3,0);
-  digitalWrite(18,0);
-  digitalWrite(19,1);
-  digitalWrite(14,0);
-  digitalWrite(15,0);
-  digitalWrite(16,0);
-  digitalWrite(17,1);
-  delay(t);
-
-  digitalWrite(2,1);
-  digitalWrite(3,0);
-  digitalWrite(18,0);
-  digitalWrite(19,1);
-  digitalWrite(14,1);
-  digitalWrite(15,0);
-  digitalWrite(16,0);
-  digitalWrite(17,1);
-  delay(t); 
-}
+int t = 3;
 
 void stepBack()
 {
-  digitalWrite(2,1);
-  digitalWrite(3,0);
-  digitalWrite(18,0);
-  digitalWrite(19,1);
-  digitalWrite(14,1);
-  digitalWrite(15,0);
-  digitalWrite(16,0);
-  digitalWrite(17,1);
+
+  digitalWrite(2, 1);
+  digitalWrite(3, 0);
+  digitalWrite(18, 0);
+  digitalWrite(19, 0);
+  digitalWrite(14, 1);
+  digitalWrite(15, 0);
+  digitalWrite(16, 0);
+  digitalWrite(17, 1);
   delay(t);
 
-  digitalWrite(2,0);
-  digitalWrite(3,0);
-  digitalWrite(18,0);
-  digitalWrite(19,1);
-  digitalWrite(14,0);
-  digitalWrite(15,0);
-  digitalWrite(16,0);
-  digitalWrite(17,1);
-  delay(t);
-  
-  digitalWrite(2,0);
-  digitalWrite(3,0);
-  digitalWrite(18,1);
-  digitalWrite(19,1);
-  digitalWrite(14,0);
-  digitalWrite(15,0);
-  digitalWrite(16,1);
-  digitalWrite(17,1);
+  digitalWrite(2, 1);
+  digitalWrite(3, 1);
+  digitalWrite(18, 0);
+  digitalWrite(19, 0);
+  digitalWrite(14, 0);
+  digitalWrite(15, 0);
+  digitalWrite(16, 0);
+  digitalWrite(17, 1);
   delay(t);
 
-  digitalWrite(2,0);
-  digitalWrite(3,0);
-  digitalWrite(18,1);
-  digitalWrite(19,0);
-  digitalWrite(14,0);
-  digitalWrite(15,0);
-  digitalWrite(16,1);
-  digitalWrite(17,0);
-  delay(t);
-  
-  digitalWrite(2,0);
-  digitalWrite(3,1);
-  digitalWrite(18,1);
-  digitalWrite(19,0);
-  digitalWrite(14,0);
-  digitalWrite(15,1);
-  digitalWrite(16,1);
-  digitalWrite(17,0);
+  digitalWrite(2, 0);
+  digitalWrite(3, 1);
+  digitalWrite(18, 0);
+  digitalWrite(19, 0);
+  digitalWrite(14, 0);
+  digitalWrite(15, 0);
+  digitalWrite(16, 1);
+  digitalWrite(17, 1);
   delay(t);
 
-  digitalWrite(2,0);
-  digitalWrite(3,1);
-  digitalWrite(18,0);
-  digitalWrite(19,0);
-  digitalWrite(14,0);
-  digitalWrite(15,1);
-  digitalWrite(16,0);
-  digitalWrite(17,0);
+  digitalWrite(2, 0);
+  digitalWrite(3, 1);
+  digitalWrite(18, 1);
+  digitalWrite(19, 0);
+  digitalWrite(14, 0);
+  digitalWrite(15, 0);
+  digitalWrite(16, 1);
+  digitalWrite(17, 0);
   delay(t);
 
-  digitalWrite(2,1);
-  digitalWrite(3,1);
-  digitalWrite(18,0);
-  digitalWrite(19,0);
-  digitalWrite(14,1);
-  digitalWrite(15,1);
-  digitalWrite(16,0);
-  digitalWrite(17,0);
+  digitalWrite(2, 0);
+  digitalWrite(3, 0);
+  digitalWrite(18, 1);
+  digitalWrite(19, 0);
+  digitalWrite(14, 0);
+  digitalWrite(15, 1);
+  digitalWrite(16, 1);
+  digitalWrite(17, 0);
   delay(t);
 
-  digitalWrite(2,1);
-  digitalWrite(3,0);
-  digitalWrite(18,0);
-  digitalWrite(19,0);
-  digitalWrite(14,1);
-  digitalWrite(15,0);
-  digitalWrite(16,0);
-  digitalWrite(17,0);
+  digitalWrite(2, 0);
+  digitalWrite(3, 0);
+  digitalWrite(18, 1);
+  digitalWrite(19, 1);
+  digitalWrite(14, 0);
+  digitalWrite(15, 1);
+  digitalWrite(16, 0);
+  digitalWrite(17, 0);
+  delay(t);
+
+  digitalWrite(2, 0);
+  digitalWrite(3, 0);
+  digitalWrite(18, 0);
+  digitalWrite(19, 1);
+  digitalWrite(14, 1);
+  digitalWrite(15, 1);
+  digitalWrite(16, 0);
+  digitalWrite(17, 0);
+  delay(t);
+
+  digitalWrite(2, 1);
+  digitalWrite(3, 0);
+  digitalWrite(18, 0);
+  digitalWrite(19, 1);
+  digitalWrite(14, 1);
+  digitalWrite(15, 0);
+  digitalWrite(16, 0);
+  digitalWrite(17, 0);
+  delay(t);
+}
+
+void stepForward()
+{
+  digitalWrite(2, 1);
+  digitalWrite(3, 0);
+  digitalWrite(18, 0);
+  digitalWrite(19, 1);
+  digitalWrite(14, 1);
+  digitalWrite(15, 0);
+  digitalWrite(16, 0);
+  digitalWrite(17, 0);
+  delay(t);
+
+  digitalWrite(2, 0);
+  digitalWrite(3, 0);
+  digitalWrite(18, 0);
+  digitalWrite(19, 1);
+  digitalWrite(14, 1);
+  digitalWrite(15, 1);
+  digitalWrite(16, 0);
+  digitalWrite(17, 0);
+  delay(t);
+
+  digitalWrite(2, 0);
+  digitalWrite(3, 0);
+  digitalWrite(18, 1);
+  digitalWrite(19, 1);
+  digitalWrite(14, 0);
+  digitalWrite(15, 1);
+  digitalWrite(16, 0);
+  digitalWrite(17, 0);
+  delay(t);
+
+  digitalWrite(2, 0);
+  digitalWrite(3, 0);
+  digitalWrite(18, 1);
+  digitalWrite(19, 0);
+  digitalWrite(14, 0);
+  digitalWrite(15, 1);
+  digitalWrite(16, 1);
+  digitalWrite(17, 0);
+  delay(t);
+
+  digitalWrite(2, 0);
+  digitalWrite(3, 1);
+  digitalWrite(18, 1);
+  digitalWrite(19, 0);
+  digitalWrite(14, 0);
+  digitalWrite(15, 0);
+  digitalWrite(16, 1);
+  digitalWrite(17, 0);
+  delay(t);
+
+  digitalWrite(2, 0);
+  digitalWrite(3, 1);
+  digitalWrite(18, 0);
+  digitalWrite(19, 0);
+  digitalWrite(14, 0);
+  digitalWrite(15, 0);
+  digitalWrite(16, 1);
+  digitalWrite(17, 1);
+  delay(t);
+
+  digitalWrite(2, 1);
+  digitalWrite(3, 1);
+  digitalWrite(18, 0);
+  digitalWrite(19, 0);
+  digitalWrite(14, 0);
+  digitalWrite(15, 0);
+  digitalWrite(16, 0);
+  digitalWrite(17, 1);
+  delay(t);
+
+  digitalWrite(2, 1);
+  digitalWrite(3, 0);
+  digitalWrite(18, 0);
+  digitalWrite(19, 0);
+  digitalWrite(14, 1);
+  digitalWrite(15, 0);
+  digitalWrite(16, 0);
+  digitalWrite(17, 1);
   delay(t);
 
 }
 
-void pushUp(){
-    
-  digitalWrite(8,1);
-  digitalWrite(9,0);
-  digitalWrite(10,0);
-  digitalWrite(11,0);
+void pushUpout() {
+
+  digitalWrite(8, 1);
+  digitalWrite(9, 1);
+  digitalWrite(10, 0);
+  digitalWrite(11, 0);
   delay(t);
 
-  digitalWrite(8,0);
-  digitalWrite(9,1);
-  digitalWrite(10,0);
-  digitalWrite(11,0);
+  digitalWrite(8, 0);
+  digitalWrite(9, 1);
+  digitalWrite(10, 1);
+  digitalWrite(11, 0);
   delay(t);
 
-  digitalWrite(8,0);
-  digitalWrite(9,0);
-  digitalWrite(10,1);
-  digitalWrite(11,0);  
+  digitalWrite(8, 0);
+  digitalWrite(9, 0);
+  digitalWrite(10, 1);
+  digitalWrite(11, 1);
   delay(t);
 
-  digitalWrite(8,0);
-  digitalWrite(9,0);
-  digitalWrite(10,0);
-  digitalWrite(11,1);
+  digitalWrite(8, 1);
+  digitalWrite(9, 0);
+  digitalWrite(10, 0);
+  digitalWrite(11, 1);
   delay(t);
 }
 
-void pushDown(){
+void pushUpin() {
 
-  digitalWrite(4,1);
-  digitalWrite(5,0);
-  digitalWrite(6,0);
-  digitalWrite(7,0);
+  digitalWrite(8, 1);
+  digitalWrite(9, 0);
+  digitalWrite(10, 0);
+  digitalWrite(11, 1);
   delay(t);
 
-  digitalWrite(4,0);
-  digitalWrite(5,1);
-  digitalWrite(6,0);
-  digitalWrite(7,0);
+  digitalWrite(8, 0);
+  digitalWrite(9, 0);
+  digitalWrite(10, 1);
+  digitalWrite(11, 1);
   delay(t);
 
-  digitalWrite(4,0);
-  digitalWrite(5,0);
-  digitalWrite(6,1);
-  digitalWrite(7,0);  
+  digitalWrite(8, 0);
+  digitalWrite(9, 1);
+  digitalWrite(10, 1);
+  digitalWrite(11, 0);
   delay(t);
 
-  digitalWrite(4,0);
-  digitalWrite(5,0);
-  digitalWrite(6,0);
-  digitalWrite(7,1);
+  digitalWrite(8, 1);
+  digitalWrite(9, 1);
+  digitalWrite(10, 0);
+  digitalWrite(11, 0);
+  delay(t);
+}
+void pushDown() {
+
+  digitalWrite(4, 1);
+  digitalWrite(5, 0);
+  digitalWrite(6, 0);
+  digitalWrite(7, 0);
+  delay(t);
+
+  digitalWrite(4, 0);
+  digitalWrite(5, 1);
+  digitalWrite(6, 0);
+  digitalWrite(7, 0);
+  delay(t);
+
+  digitalWrite(4, 0);
+  digitalWrite(5, 0);
+  digitalWrite(6, 1);
+  digitalWrite(7, 0);
+  delay(t);
+
+  digitalWrite(4, 0);
+  digitalWrite(5, 0);
+  digitalWrite(6, 0);
+  digitalWrite(7, 1);
   delay(t);
 
 }
 
-void loop(){
+void loop() {
 
-// test 
-  for(int i=1;i<=512;i++){
+  // test
+  for (int i = 1; i <= 512; i++) {
     stepForward();
-    pushUp();
-//   Serial.println(String(i));
+    pushUpin();
+    //   Serial.println(String(i));
   }
-//Serial.println("One round");
-    delay(200);
+  for(int i=1;i<=512;i++)
+  {
+    stepForward();
+    pushUpout();
+  }
+  //Serial.println("One round");
+  //delay(200);
 
-  for(int i=1;i<=512;i++){
-    stepBack();
-//  Serial.println(String(i));
-  }
-//Serial.println("One round");
-    delay(200);
+//  for (int i = 1; i <= 512; i++) {
+//    stepBack();
+//    //  Serial.println(String(i));
+//  }
+  //Serial.println("One round");
+  //delay(200);
 
 }
