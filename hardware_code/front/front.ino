@@ -8,6 +8,7 @@
 #include <SoftwareSerial.h>
 
 SoftwareSerial BT (9, 8);
+SoftwareSerial mySerial (1,0); //UART RX, TX
 char text;
 
 void setup()
@@ -241,5 +242,9 @@ void loop()
     }
     //Serial.println("One round");
         delay(200);
+    
+     //測試UART
+    // Serial.write("HELLO");
+    // delay(2000);
 
 }
