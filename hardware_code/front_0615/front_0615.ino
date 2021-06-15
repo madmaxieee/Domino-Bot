@@ -34,14 +34,14 @@ void setup()
     // while(!mpu.begin(MPU6050_SCALE_2000DPS, MPU6050_RANGE_2G))
     // {
     //     Serial.println("Could not find a valid MPU6050 sensor, check wiring!");
-    //     delay(500);
+    //     delayMicroseconds(500);
     // }
 
     // checkSettings();
 
 }
 
-int t = 1;
+int t = 1000;
 
 void stepForward()
 {
@@ -54,7 +54,7 @@ void stepForward()
   digitalWrite(5, 0);
   digitalWrite(6, 0);
   digitalWrite(7, 1);
-  delay(t);
+  delayMicroseconds(t);
 
   digitalWrite(2, 1);
   digitalWrite(3, 1);
@@ -64,7 +64,7 @@ void stepForward()
   digitalWrite(5, 0);
   digitalWrite(6, 0);
   digitalWrite(7, 1);
-  delay(t);
+  delayMicroseconds(t);
 
   digitalWrite(2, 0);
   digitalWrite(3, 1);
@@ -74,7 +74,7 @@ void stepForward()
   digitalWrite(5, 0);
   digitalWrite(6, 1);
   digitalWrite(7, 1);
-  delay(t);
+  delayMicroseconds(t);
 
   digitalWrite(2, 0);
   digitalWrite(3, 1);
@@ -84,7 +84,7 @@ void stepForward()
   digitalWrite(5, 0);
   digitalWrite(6, 1);
   digitalWrite(7, 0);
-  delay(t);
+  delayMicroseconds(t);
 
   digitalWrite(2, 0);
   digitalWrite(3, 0);
@@ -94,7 +94,7 @@ void stepForward()
   digitalWrite(5, 1);
   digitalWrite(6, 1);
   digitalWrite(7, 0);
-  delay(t);
+  delayMicroseconds(t);
 
   digitalWrite(2, 0);
   digitalWrite(3, 0);
@@ -104,7 +104,7 @@ void stepForward()
   digitalWrite(5, 1);
   digitalWrite(6, 0);
   digitalWrite(7, 0);
-  delay(t);
+  delayMicroseconds(t);
 
   digitalWrite(2, 0);
   digitalWrite(3, 0);
@@ -114,7 +114,7 @@ void stepForward()
   digitalWrite(5, 1);
   digitalWrite(6, 0);
   digitalWrite(7, 0);
-  delay(t);
+  delayMicroseconds(t);
 
   digitalWrite(2, 1);
   digitalWrite(3, 0);
@@ -124,7 +124,7 @@ void stepForward()
   digitalWrite(5, 0);
   digitalWrite(6, 0);
   digitalWrite(7, 0);
-  delay(t);
+  delayMicroseconds(t);
 }
 
 void stepBack()
@@ -137,7 +137,7 @@ void stepBack()
   digitalWrite(5, 0);
   digitalWrite(6, 0);
   digitalWrite(7, 0);
-  delay(t);
+  delayMicroseconds(t);
 
   digitalWrite(2, 0);
   digitalWrite(3, 0);
@@ -147,7 +147,7 @@ void stepBack()
   digitalWrite(5, 1);
   digitalWrite(6, 0);
   digitalWrite(7, 0);
-  delay(t);
+  delayMicroseconds(t);
 
   digitalWrite(2, 0);
   digitalWrite(3, 0);
@@ -157,7 +157,7 @@ void stepBack()
   digitalWrite(5, 1);
   digitalWrite(6, 0);
   digitalWrite(7, 0);
-  delay(t);
+  delayMicroseconds(t);
 
   digitalWrite(2, 0);
   digitalWrite(3, 0);
@@ -167,7 +167,7 @@ void stepBack()
   digitalWrite(5, 1);
   digitalWrite(6, 1);
   digitalWrite(7, 0);
-  delay(t);
+  delayMicroseconds(t);
 
   digitalWrite(2, 0);
   digitalWrite(3, 1);
@@ -177,7 +177,7 @@ void stepBack()
   digitalWrite(5, 0);
   digitalWrite(6, 1);
   digitalWrite(7, 0);
-  delay(t);
+  delayMicroseconds(t);
 
   digitalWrite(2, 0);
   digitalWrite(3, 1);
@@ -187,7 +187,7 @@ void stepBack()
   digitalWrite(5, 0);
   digitalWrite(6, 1);
   digitalWrite(7, 1);
-  delay(t);
+  delayMicroseconds(t);
 
   digitalWrite(2, 1);
   digitalWrite(3, 1);
@@ -197,7 +197,7 @@ void stepBack()
   digitalWrite(5, 0);
   digitalWrite(6, 0);
   digitalWrite(7, 1);
-  delay(t);
+  delayMicroseconds(t);
 
   digitalWrite(2, 1);
   digitalWrite(3, 0);
@@ -207,7 +207,7 @@ void stepBack()
   digitalWrite(5, 0);
   digitalWrite(6, 0);
   digitalWrite(7, 1);
-  delay(t);
+  delayMicroseconds(t);
 
 }
 
@@ -232,13 +232,13 @@ void loop()
         stepForward();
     }
 //    //Serial.println("One round");
-//        delay(200);
+//        delayMicroseconds(200);
 //
 //    for(int i=1;i<=512;i++){
 //        stepBack();
 //    //  Serial.println(String(i));
 //    }
 //    //Serial.println("One round");
-//        delay(200);
+//        delayMicroseconds(200);
 
 }

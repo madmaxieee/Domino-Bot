@@ -315,15 +315,15 @@ void loop() {
   // test
   for (int i = 1; i <= 512; i++) {
     stepForward();
-//    pushUpin();
-//   pushDownin();
+    //pushUpin();
+    pushDownout();
     //   Serial.println(String(i));
   }
   for(int i=1;i<=512;i++)
   {
-//    stepForward();
-//    pushUpout();
-//      pushDownout();
+    stepForward();
+    //pushUpout();
+    pushDownin();
   }
   //Serial.println("One round");
   //delay(200);
