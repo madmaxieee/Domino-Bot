@@ -5,7 +5,8 @@
 // //0, 1              ->     TX, RX
 // //12, 13            ->     連接後板
 
-
+#include <SoftwareSerial.h>
+SoftwareSerial mySerial(1, 0); //RX,TX
 void setup()
 {
   //右前輪
@@ -333,5 +334,15 @@ void loop() {
 //  }
   //Serial.println("One round");
   //delay(200);
+  
+  //測試UART
+  // while (!Serial.available()) {}
+
+  // Serial.write(mySerial.read());
+
+  // while (my.Serial.available()>0)
+  // {
+  //   myserial.read();
+  // }
 
 }
