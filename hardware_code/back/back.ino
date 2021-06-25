@@ -10,7 +10,7 @@ SoftwareSerial mySerial(1, 0); //RX,TX
 void setup()
 {
   //右前輪
-//  delay(3000);
+  //  delay(3000);
   pinMode(2, OUTPUT);
   pinMode(3, OUTPUT);
   pinMode(18, OUTPUT);
@@ -205,25 +205,42 @@ void stepForward()
 }
 
 void pushUpout() {
-int t = 3;
+  int t = 1;
+  digitalWrite(8, 1);
+  digitalWrite(9, 0);
+  digitalWrite(10, 0);
+  digitalWrite(11, 0);
+  delay(t);
   digitalWrite(8, 1);
   digitalWrite(9, 1);
   digitalWrite(10, 0);
   digitalWrite(11, 0);
   delay(t);
-
+  digitalWrite(8, 0);
+  digitalWrite(9, 1);
+  digitalWrite(10, 0);
+  digitalWrite(11, 0);
+  delay(t);
   digitalWrite(8, 0);
   digitalWrite(9, 1);
   digitalWrite(10, 1);
   digitalWrite(11, 0);
   delay(t);
-
+  digitalWrite(8, 0);
+  digitalWrite(9, 0);
+  digitalWrite(10, 1);
+  digitalWrite(11, 0);
+  delay(t);
   digitalWrite(8, 0);
   digitalWrite(9, 0);
   digitalWrite(10, 1);
   digitalWrite(11, 1);
   delay(t);
-
+  digitalWrite(8, 0);
+  digitalWrite(9, 0);
+  digitalWrite(10, 0);
+  digitalWrite(11, 1);
+  delay(t);
   digitalWrite(8, 1);
   digitalWrite(9, 0);
   digitalWrite(10, 0);
@@ -232,80 +249,132 @@ int t = 3;
 }
 
 void pushUpin() {
-int t = 3;
+  int t = 1;
   digitalWrite(8, 1);
   digitalWrite(9, 0);
   digitalWrite(10, 0);
   digitalWrite(11, 1);
   delay(t);
-
+  digitalWrite(8, 0);
+  digitalWrite(9, 0);
+  digitalWrite(10, 0);
+  digitalWrite(11, 1);
+  delay(t);
   digitalWrite(8, 0);
   digitalWrite(9, 0);
   digitalWrite(10, 1);
   digitalWrite(11, 1);
   delay(t);
-
+  digitalWrite(8, 0);
+  digitalWrite(9, 0);
+  digitalWrite(10, 1);
+  digitalWrite(11, 0);
+  delay(t);
   digitalWrite(8, 0);
   digitalWrite(9, 1);
   digitalWrite(10, 1);
   digitalWrite(11, 0);
   delay(t);
-
+  digitalWrite(8, 0);
+  digitalWrite(9, 1);
+  digitalWrite(10, 0);
+  digitalWrite(11, 0);
+  delay(t);
   digitalWrite(8, 1);
   digitalWrite(9, 1);
+  digitalWrite(10, 0);
+  digitalWrite(11, 0);
+  delay(t);
+  digitalWrite(8, 1);
+  digitalWrite(9, 0);
   digitalWrite(10, 0);
   digitalWrite(11, 0);
   delay(t);
 }
 void pushDownin() {
-int t = 3;
+  int t = 1;
+  digitalWrite(4, 1);
+  digitalWrite(5, 0);
+  digitalWrite(6, 0);
+  digitalWrite(7, 0);
+  delay(t);
   digitalWrite(4, 1);
   digitalWrite(5, 1);
   digitalWrite(6, 0);
   digitalWrite(7, 0);
   delay(t);
-
+  digitalWrite(4, 0);
+  digitalWrite(5, 1);
+  digitalWrite(6, 0);
+  digitalWrite(7, 0);
+  delay(t);
   digitalWrite(4, 0);
   digitalWrite(5, 1);
   digitalWrite(6, 1);
   digitalWrite(7, 0);
   delay(t);
-
+  digitalWrite(4, 0);
+  digitalWrite(5, 0);
+  digitalWrite(6, 1);
+  digitalWrite(7, 0);
+  delay(t);
   digitalWrite(4, 0);
   digitalWrite(5, 0);
   digitalWrite(6, 1);
   digitalWrite(7, 1);
   delay(t);
-
+  digitalWrite(4, 0);
+  digitalWrite(5, 0);
+  digitalWrite(6, 0);
+  digitalWrite(7, 1);
+  delay(t);
   digitalWrite(4, 1);
   digitalWrite(5, 0);
   digitalWrite(6, 0);
   digitalWrite(7, 1);
   delay(t);
+
 }
 
 void pushDownout() {
-int t = 3;
+  int t = 1;
   digitalWrite(4, 1);
   digitalWrite(5, 0);
   digitalWrite(6, 0);
   digitalWrite(7, 1);
   delay(t);
-
+  digitalWrite(4, 0);
+  digitalWrite(5, 0);
+  digitalWrite(6, 0);
+  digitalWrite(7, 1);
+  delay(t);
   digitalWrite(4, 0);
   digitalWrite(5, 0);
   digitalWrite(6, 1);
   digitalWrite(7, 1);
   delay(t);
-
+  digitalWrite(4, 0);
+  digitalWrite(5, 0);
+  digitalWrite(6, 1);
+  digitalWrite(7, 0);
+  delay(t);
   digitalWrite(4, 0);
   digitalWrite(5, 1);
   digitalWrite(6, 1);
   digitalWrite(7, 0);
   delay(t);
-
+  digitalWrite(4, 0);
+  digitalWrite(5, 1);
+  digitalWrite(6, 0);
+  digitalWrite(7, 0);
+  delay(t);
   digitalWrite(4, 1);
   digitalWrite(5, 1);
+  digitalWrite(6, 0);
+  digitalWrite(7, 0);
+  delay(t);
+  digitalWrite(4, 1);
+  digitalWrite(5, 0);
   digitalWrite(6, 0);
   digitalWrite(7, 0);
   delay(t);
@@ -313,28 +382,28 @@ int t = 3;
 void loop() {
 
   // test
-  for (int i = 1; i <= 512; i++) {
-    stepForward();
-    //pushUpin();
+  for (int i = 1; i <= 490; i++) {
+    //stepForward();
+    pushUpin();
     pushDownout();
     //   Serial.println(String(i));
   }
-  for(int i=1;i<=512;i++)
+  for (int i = 1; i <= 490; i++)
   {
-    stepForward();
-    //pushUpout();
+    //stepForward();
+    pushUpout();
     pushDownin();
   }
   //Serial.println("One round");
   //delay(200);
 
-//  for (int i = 1; i <= 512; i++) {
-//    stepBack();
-//    //  Serial.println(String(i));
-//  }
+  //  for (int i = 1; i <= 512; i++) {
+  //    stepBack();
+  //    //  Serial.println(String(i));
+  //  }
   //Serial.println("One round");
   //delay(200);
-  
+
   //測試UART
   // while (!Serial.available()) {}
 
