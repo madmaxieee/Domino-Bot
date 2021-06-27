@@ -5,23 +5,22 @@
 //3.執行
 //4.確認完成此動作后繼續接受下一個指令
 #include <SoftwareSerial.h>
-SoftwareSerial BT(8,9);
 SoftwareSerial mySerial(12,13);
 void get_cmd() {
   //look for commands
   char cmd[3]; //存放gcode
   for (int i = 0; i < 3; i++)
   {
-    if (BT.available()) //如果有指令傳過來
+    if (mySerial.available()) //如果有指令傳過來
     {
       cmd[i] = Serial.read();
-      mySerial.write(cmd[i]);
-      //Serial.print(cmd); debug用
     }
     process_cmd(cmd); //  丟進去process_cmd處理
   }
 }
-
+void get_angle(){
+  
+}
 void process_cmd(char cmd[]) {
 
   //得到pass下來的指令
