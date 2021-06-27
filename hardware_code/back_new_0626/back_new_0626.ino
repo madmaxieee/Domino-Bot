@@ -1,7 +1,10 @@
 #include <SoftwareSerial.h>
 SoftwareSerial mySerial(1, 0); //RX,TX
+int timer=0;
+bool first=1;
 void setup()
 {
+  Serial.begin(9600);
   //右後輪 逆cw 順ccw
   pinMode(2, OUTPUT);
   pinMode(3, OUTPUT);
@@ -309,8 +312,19 @@ void stepForward()
 }
 
 void loop() {
-  delay(15000);
+  if(first==1)
+  {
+    delay(7534);
+    first=0;
+  }
+  else
+  {
+    delay(5888);
+  }
+//  timer=millis();
   for (int i = 1; i <= 100; i++) {
     stepForward();
   }
+//  timer=millis()-timer;
+//  Serial.println(timer);
 }
