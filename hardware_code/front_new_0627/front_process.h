@@ -8,14 +8,16 @@ int target;
 int now;
 int angle;
 char cmd[3]; //存放bt得到的command
+unsigned long timer=0;
 void get_cmd() {
   //look for commands
   for (int i = 0; i < 3; i++)
   {
-    if (BT.available()) //如果有指令傳過來
+    while (!BT.available())
     {
-      cmd[i] = BT.read();
     }
+    cmd[i] = BT.read();
+    Serial.println(cmd[i]);
   }
   mySerial.write(cmd[0]);
   angle = (cmd[1] - '0') * 10 + (cmd[2] - '0');
@@ -30,18 +32,44 @@ void get_cmd() {
   {
     target = now - angle;
   }
+  Serial.println(target);
 }
 void check_angle() {
   if (cmd[0] == '+')
   {
     while (1)
     {
-      mpu.update();
-      if (mpu.getAngleZ() >= target)
+      if (millis()-timer >= 3)
       {
-        mySerial.write('S');
-        Serial.println("stop");
-        break;
+        mpu.update();
+        int k = mpu.getAngleZ();
+        Serial.println(k);
+        if (k >= target)
+        {
+          mySerial.write('S');
+          Serial.println("stop");
+          break;
+        }
+        timer=millis();
+      }
+    }
+  }
+  else if (cmd[0] == '-')
+  {
+    while (1)
+    {
+      if (millis()-timer >= 3)
+      {
+        mpu.update();
+        int k = mpu.getAngleZ();
+        Serial.println(k);
+        if (k <= target)
+        {
+          mySerial.write('S');
+          Serial.println("stop");
+          break;
+        }
+        timer=millis();
       }
     }
   }
