@@ -3,6 +3,7 @@
 CheapStepper down (4, 5, 6, 7);
 boolean moveClockwise = false;
 void setup() {
+  mySerial.begin(9600);
   Serial.begin(9600);
   BT.begin(9600);
   Wire.begin();
@@ -23,5 +24,10 @@ void loop() {
   delay(30);
   down.moveDegrees(moveClockwise, 370);
   get_cmd();
+//  while (!BT.available())
+//  {
+//  }
+//  char cmdd = BT.read();
+//  Serial.println(cmdd);
   check_angle();
 }

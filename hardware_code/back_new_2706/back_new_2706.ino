@@ -1,17 +1,19 @@
 #include <SoftwareSerial.h>
 #include <Stepper.h>
-SoftwareSerial mySerial(12, 13); //RX,TX
+#define STEPS 2048
+SoftwareSerial mySerial(13, 12); //RX,TX
 Stepper stepperL1(STEPS, 11, 9, 10, 8);
 Stepper stepperR1(STEPS, 7, 5, 6, 4);
 Stepper stepperL2(STEPS, 17, 15, 14, 16);
 Stepper stepperR2(STEPS, 19, 3, 18, 2);
 
 
-int timer=0;
-bool first=1;
+int timer = 0;
+bool first = 1;
 void setup()
 {
   Serial.begin(9600);
+  mySerial.begin(9600);
   //右後輪 逆cw 順ccw
   pinMode(2, OUTPUT);
   pinMode(3, OUTPUT);
@@ -33,7 +35,7 @@ void setup()
   pinMode(16, OUTPUT);
   pinMode(17, OUTPUT);
 
-  Serial.begin(9600);
+  //Serial.begin(9600);
 }
 
 void stepBack()
@@ -318,118 +320,94 @@ void stepForward()
   delay(t);
 }
 
-bool checkYaw(){ //檢查前板是否回傳's'給後板 (to break Rotate Function)
+bool checkYaw() { //檢查前板是否回傳's'給後板 (to break Rotate Function)
 
-    char cmd2;
+  char cmd2;
 
-    while(true)
+  while (true)
+  {
+    cmd2 = mySerial.read();
+    if (cmd2 == 'S')
     {
-        cmd2 = mySerial.read();
-        if (cmd2 == 'S')
-        {
-          return false;
-          break;
-        }  
+      return false;
+      break;
     }
+    else
+      return true;
+  }
 
 }
 
 void rotateLeft()
 {
-
-  stepperL1.setSpeed(5); //設定速度 0-15
-  stepperR1.setSpeed(5);
-  stepperL2.setSpeed(5);
-  stepperR2.setSpeed(5);
+  stepperL1.setSpeed(15); //設定速度 0-15
+  stepperR1.setSpeed(15);
+  stepperL2.setSpeed(15);
+  stepperR2.setSpeed(15);
 
   while (1) //轉彎
   {
-      if (checkYaw() == false) //判斷如果前板說角度足夠就會break出去準備前進
-      {
-        break;
-      }
-      stepperL1.step(-1);
-      stepperL2.step(-1);
-      stepperR1.step(1);
-      stepperR2.step(1);
+    if (checkYaw() == false) //判斷如果前板說角度足夠就會break出去準備前進
+    {
+      break;
+    }
+    stepperL1.step(-1);
+    stepperL2.step(-1);
+    stepperR1.step(1);
+    stepperR2.step(1);
   }
-  
+
 }
 
 void rotateRight()
 {
-  stepperL1.setSpeed(5); //設定速度 0-15
-  stepperR1.setSpeed(5);
-  stepperL2.setSpeed(5);
-  stepperR2.setSpeed(5);
+  stepperL1.setSpeed(15); //設定速度 0-15
+  stepperR1.setSpeed(15);
+  stepperL2.setSpeed(15);
+  stepperR2.setSpeed(15);
 
   while (1) //轉彎
   {
-      stepperL1.step(1);
-      stepperL2.step(1);
-      stepperR1.step(-1);
-      stepperR2.step(-1);
+    stepperL1.step(100);
+    stepperL2.step(100);
+    stepperR1.step(-100);
+    stepperR2.step(-10);
 
-      if (checkYaw() == false) //判斷如果前板說角度足夠就會break出去準備前進
-      {
-        break;
-      }
+    if (checkYaw() == false) //判斷如果前板說角度足夠就會break出去準備前進
+    {
+      break;
+    }
   }
 }
 
 void forward() //rotate後 繼續前進直到最終目的地
 {
-      //一步大概是5.625度 一圈是step2048的話 就直接 換算得到一百步是3200
-      stepperL1.step(3200); 
-      stepperL2.step(3200);
-      stepperR1.step(3200);
-      stepperR2.step(3200);
+  //一步大概是5.625度 一圈是step2048的話 就直接 換算得到一百步是3200
+  for (int i = 1; i <= 3200; i++)
+  {
+    stepperL1.step(1);
+    stepperL2.step(-1);
+    stepperR1.step(-1);
+    stepperR2.step(1);
+  }
 }
 
 void loop() {
-
   char cmd;
-
-  while (mySerial.available()>0)
+  if (mySerial.available())
   {
-      cmd =mySerial.read();
-
-      if (cmd == 'S')
-      {
-          break;
-      }
-
-      if (cmd == 'L')
-      {
-          rotateLeft();
-          forward();
-      }
-      if (cmd == 'R')
-      {
-          rotateRight();
-          forward();   
-      }
-      
+    cmd = mySerial.read();
+    Serial.println(cmd);
+    if (cmd == '+')
+    {
+      rotateLeft();
+      forward();
+    }
+    if (cmd == '-')
+    {
+      rotateRight();
+      forward();
+    }
   }
 
-
-
-//back_new2606 
-//   if(first==1)
-//   {
-//     delay(7534);
-//     first=0;
-//   }
-//   else
-//   {
-//     delay(5888);
-//   }
-// //  timer=millis();
-//   for (int i = 1; i <= 100; i++) {
-//     stepForward();
-//   }
-
-
-//  timer=millis()-timer;
-//  Serial.println(timer);
 }
