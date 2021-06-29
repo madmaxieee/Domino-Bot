@@ -184,14 +184,15 @@ class BackEnd(QObject):
         with open(command_path, 'r') as f:
             raw_command = f.readlines()
 
-        raw_command.append("exit")
+        raw_command.append('e')
 
         for command in raw_command:
-            if command == "exit":
-                break
-            bt.write(command)
+            for char in command:
+                bt.write(char)
 
         self.uploadSuccess.emit()
 
-    if __name__ == '__main__':
-        pass
+if __name__ == '__main__':
+    with open("test_command.txt", 'r') as f:
+        data = f.readlines()
+    print(data)
