@@ -191,7 +191,7 @@ class BackEnd(QObject):
                 break
             bt.write(command)
 
-        self.uploadSucces.emit()
+        self.uploadSuccess.emit()
 
     if __name__ == '__main__':
         pass

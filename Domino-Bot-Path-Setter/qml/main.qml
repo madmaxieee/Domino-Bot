@@ -407,10 +407,10 @@ Window {
                             id: btnConvert
                             width: sideBar.width
                             text: qsTr("Export")
-                            iconWidth: 16
-                            iconHeight: 16
+                            iconWidth: 20
+                            iconHeight: 20
                             isActiveMenu: false
-                            btnIconSource: "../img/svg/export_icon.svg"
+                            btnIconSource: "../img/svg/convert_icon.svg"
 
                             onClicked: {
                                 backend.convert()
