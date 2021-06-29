@@ -2,6 +2,7 @@
 #include"front_process.h"
 CheapStepper down (4, 5, 6, 7);
 boolean moveClockwise = false;
+int in=0;
 void setup() {
   mySerial.begin(9600);
   Serial.begin(9600);
@@ -19,11 +20,20 @@ void setup() {
 }
 void loop() {
   moveClockwise = true;
-  down.moveDegrees(moveClockwise, 370);
+  down.moveDegrees(moveClockwise, 430-in);
   moveClockwise = false;
-  delay(50);
-  down.moveDegrees(moveClockwise, 370);
+  delay(120);
+  down.moveDegrees(moveClockwise, 430);
   get_cmd();
+  if(cmd[0]=='-')
+  {
+    in=180;
+    down.moveDegrees(1, 180);
+  }
+  else
+  {
+    in=0;
+  }
 //  while (!BT.available())
 //  {
 //  }

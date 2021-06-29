@@ -19,7 +19,12 @@ void get_cmd() {
     cmd[i] = BT.read();
     Serial.println(cmd[i]);
   }
-  mySerial.write(cmd[0]);
+  for(int i=0;i<3;i++)
+  {
+    mySerial.write(cmd[i]);
+  }
+//  mySerial.write(cmd[0]);
+  
   angle = (cmd[1] - '0') * 10 + (cmd[2] - '0');
   mpu.update();
   now = mpu.getAngleZ();
