@@ -1,7 +1,9 @@
 from PySide2.QtCore import QObject, Slot, Signal, QUrl
 from svg_file import SvgFile
-from myMath import cross, intersect
+from myMath import intersect
 import PathElement as elem
+import threading
+from bluetooth import Bluetooth
 import json
 
 settings_file = json.load(open("data/settings.json"))
@@ -52,11 +54,14 @@ class BackEnd(QObject):
         with open('data/settings.json', 'w') as outfile:
             json.dump(settings_file, outfile)
 
+    fileNotExistWarning = Signal()
+
     @Slot()
     def saveFile(self):
-        if self.working_file != None:
+        if self.checkFile():
             self.working_file.save()
         else:
+            self.fileNotExistWarning.emit()
             print("can\'t save, file not created yet")
 
     checkFileOpened = Signal(bool)
@@ -138,15 +143,55 @@ class BackEnd(QObject):
         print('clear')
 
     @Slot()
-    def convert(self):
-        if self.checkFile():
-            dirList = []
-            dirList[:] = self.working_path
-            dirList[-4:] = '_command.txt'
-            dirStr = ''.join(dirList)
-            self.working_file.to_Arduino_Command(dirStr)
+    def convert(self, get_path=False):
+        if not self.checkFile():
+            self.fileNotExistWarning.emit()
+            return
+        dirList = []
+        dirList[:] = self.working_path
+        dirList[-4:] = '_command.txt'
+        dirStr = ''.join(dirList)
+        self.working_file.to_Arduino_Command(dirStr)
+
+        if get_path:
+            return dirStr
+
+    uploadSuccess = Signal()
+
+    @Slot(str)
+    def upload(self, COMport="COM17"):
+        if not self.checkFile():
+            self.fileNotExistWarning.emit()
+            return
+
+        command_path = self.convert(get_path=True)
+
+        bt = Bluetooth(COMport)
+
+        def btRead():
+            while True:
+                if bt.waiting():
+                    print(bt.readString())
+
+        while not bt.is_open(): pass
+
+        print("BT Connected!")
+
+        readThread = threading.Thread(target=btRead)
+        readThread.setDaemon(True)
+        readThread.start()
+
+        with open(command_path, 'r') as f:
+            raw_command = f.readlines()
+
+        raw_command.append("exit")
+
+        for command in raw_command:
+            if command == "exit":
+                break
+            bt.write(command)
+
+        self.uploadSucces.emit()
 
     if __name__ == '__main__':
-        l1 = [0, 20]
-        l1 = [max(l1), min(l1)]
-        print(l1)
+        pass

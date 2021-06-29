@@ -335,12 +335,6 @@ Window {
                                 CustomTextField {
                                     id: fileNameTextField
                                     placeholderText: "Enter file name"
-                                    Keys.onEnterPressed: {
-                                        btnNew.newFileName = fileNameTextField.text
-                                    }
-                                    Keys.onReturnPressed: {
-                                        btnNew.newFileName = fileNameTextField.text
-                                    }
                                 }
                                 onAccepted: {
                                     btnNew.newFileName = fileNameTextField.text
@@ -431,9 +425,20 @@ Window {
                             iconHeight: 18
                             isActiveMenu: false
                             btnIconSource: "../img/svg/upload_icon.svg"
-
                             onClicked: {
+                                comPortDialog.open()
+                            }
 
+                            Dialog {
+                                id: comPortDialog
+                                title: "Bluetooth connecting"
+                                CustomTextField {
+                                    id: comPortTextField
+                                    placeholderText: "Select COM port"
+                                }
+                                onAccepted: {
+                                    backend.upload(comPortTextField.text)
+                                }
                             }
                         }
                     }
@@ -520,6 +525,27 @@ Window {
                     }
                 }
             }
+        }
+    }
+
+    MessageDialog {
+        id: uploadSuccessMsg
+        text: "Upload Successful!"
+    }
+
+    Connections {
+        target: backend
+
+        function onCheckFileOpened(b) {
+            isFileOpened = b
+        }
+
+        function onSvgPath(path) {
+            labelFileinfo.text = path
+        }
+
+        function onUploadSuccess() {
+            uploadSuccessMsg.open()
         }
     }
 
@@ -683,18 +709,6 @@ Window {
                                  mainWindow.startSystemResize(
                                              Qt.TopEdge | Qt.LeftEdge)
                              }
-        }
-    }
-
-    Connections {
-        target: backend
-
-        function onCheckFileOpened(b) {
-            isFileOpened = b
-        }
-
-        function onSvgPath(path) {
-            labelFileinfo.text = path
         }
     }
 }
