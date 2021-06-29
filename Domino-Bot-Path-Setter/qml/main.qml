@@ -146,14 +146,15 @@ Window {
                         text: qsTr("App description")
                         anchors.fill: parent
                         verticalAlignment: Text.AlignVCenter
-                        anchors.rightMargin: 300
+                        anchors.rightMargin: 298
                         anchors.leftMargin: 10
+                        visible: false
                     }
 
                     Label {
                         id: labelTopRightinfo
                         color: "#9eaab2"
-                        text: qsTr("| Home")
+                        text: qsTr("")
                         anchors.left: labelTopinfo.right
                         anchors.right: parent.right
                         anchors.top: parent.top
@@ -162,6 +163,7 @@ Window {
                         verticalAlignment: Text.AlignVCenter
                         anchors.rightMargin: 10
                         anchors.leftMargin: 0
+                        visible: false
                     }
                 }
 
@@ -282,7 +284,7 @@ Window {
                         anchors.left: parent.left
                         anchors.top: parent.top
                         anchors.bottom: parent.bottom
-                        anchors.bottomMargin: 160
+                        anchors.bottomMargin: 100
                         clip: true
 
                         LeftMenuBtn {
@@ -378,7 +380,7 @@ Window {
                             }
 
                             MessageDialog {
-                                id: saveDislog
+                                id: saveDialog
                                 title: ""
                                 text: "File successfully saved!"
                             }
@@ -394,10 +396,10 @@ Window {
                             btnIconSource: "../img/svg/edit_icon.svg"
 
                             onClicked: {
+                                backend.openFile("last_used")
                                 backend.checkFile()
 
                                 if (isFileOpened) {
-
                                     btnSettings.isActiveMenu = false
                                     settingsPageView.visible = false
 
@@ -410,11 +412,25 @@ Window {
                         LeftMenuBtn {
                             id: btnConvert
                             width: sideBar.width
-                            text: qsTr("Convert")
+                            text: qsTr("Export")
                             iconWidth: 16
                             iconHeight: 16
                             isActiveMenu: false
                             btnIconSource: "../img/svg/export_icon.svg"
+
+                            onClicked: {
+                                backend.convert()
+                            }
+                        }
+
+                        LeftMenuBtn {
+                            id: btnUpload
+                            width: sideBar.width
+                            text: qsTr("Upload")
+                            iconWidth: 18
+                            iconHeight: 18
+                            isActiveMenu: false
+                            btnIconSource: "../img/svg/upload_icon.svg"
 
                             onClicked: {
 
@@ -433,7 +449,6 @@ Window {
                         btnIconSource: "../img/svg/settings_icon.svg"
 
                         onClicked: {
-                            btnHome.isActiveMenu = false
                             btnSettings.isActiveMenu = true
                             btnEdit.isActiveMenu = false
                             settingsPageView.visible = true
@@ -479,9 +494,9 @@ Window {
                     anchors.leftMargin: 0
 
                     Label {
-                        id: labelBottominfo
+                        id: labelFileinfo
                         color: "#9eaab2"
-                        text: qsTr("App description")
+                        text: qsTr("Fileinfo")
                         anchors.fill: parent
                         verticalAlignment: Text.AlignVCenter
                         anchors.rightMargin: 30
@@ -676,6 +691,10 @@ Window {
 
         function onCheckFileOpened(b) {
             isFileOpened = b
+        }
+
+        function onSvgPath(path) {
+            labelFileinfo.text = path
         }
     }
 }

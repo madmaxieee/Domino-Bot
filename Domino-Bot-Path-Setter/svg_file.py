@@ -10,6 +10,7 @@ import json
 import PathElement as elem
 
 data_file = json.load(open("data/data.json"))
+settings_file = json.load(open("data/settings.json"))
 
 
 class SvgFile:
@@ -37,11 +38,9 @@ class SvgFile:
             self.__raw_data.append(data_file['svg-close'])
 
         self.save()
-
-        self.tolerance = 2
         self.__Ard_command_path = None
 
-    def __file_name(self):
+    def _file_name(self):
         return re.split("[./]", self.file_path)[-2]
 
     def save(self):
@@ -115,7 +114,7 @@ class SvgFile:
             pass
 
     def to_gcode(self):
-        TOLERANCES['approximation'] = self.tolerance
+        TOLERANCES['approximation'] = settings_file['tolerance']
 
         gcode_compiler = Compiler(interfaces.Gcode,
                                   movement_speed=0,
@@ -125,7 +124,7 @@ class SvgFile:
         curves = parse_file(self.file_path, transform_origin=False)
 
         gcode_compiler.append_curves(curves)
-        gcode_compiler.compile_to_file(f'gcode/{self.__file_name()}.gcode', passes=1)
+        gcode_compiler.compile_to_file(f'gcode/{self._file_name()}.gcode', passes=1)
 
         del gcode_compiler
 
@@ -137,24 +136,24 @@ class SvgFile:
         return f'{theta*180/pi:+04.0f} {r:03.0f}\n'
 
     def to_Arduino_Command(self, path=None):
-        if self.__Ard_command_path == None and path == None:
-            self.__Ard_command_path = Path(
-                f'ArduinoCommand/{self.__file_name()}.txt')
-        elif self.__Ard_command_path == None and path != None:
+        if path != None:
             self.__Ard_command_path = path
+        elif self.__Ard_command_path == None:
+            self.__Ard_command_path = Path(
+                f'ArduinoCommand/{self._file_name()}.txt')
 
         target_path = self.__Ard_command_path
 
         # load file
         try:
             command_file = open(target_path, 'r')
-        except Exception as e:
+        except:
             command_file = open(target_path, 'x')
         command_file.close()
         command_text = []
         self.to_gcode()
 
-        with open(f'gcode/{self.__file_name()}.gcode') as f:
+        with open(f'gcode/{self._file_name()}.gcode') as f:
             gcode = f.read()
         parsed_gcode = GcodeParser(gcode)
         gline_list = parsed_gcode.lines

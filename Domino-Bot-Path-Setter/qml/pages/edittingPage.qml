@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtGraphicalEffects 1.15
+import QtQuick.Dialogs 1.3
 
 Item {
     id: item1
@@ -128,6 +129,30 @@ Item {
                         backend.undo()
                     }
                 }
+
+                Rectangle {
+                    height: 10
+
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    color: "#00000000"
+                }
+
+                CustomToolButton {
+                    id: clearBtn
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    displayText: "Clear"
+                    height: 30
+
+                    onClicked: {
+                        placeRootBtn.isActive = false
+                        makeLineBtn.isActive = false
+                        makeCurveBtn.isActive = false
+
+                        backend.clear()
+                    }
+                }
             }
         }
 
@@ -180,7 +205,7 @@ Item {
                     width: 10
                     height: 10
                     fillMode: Image.PreserveAspectFit
-                    visible: true
+                    visible: false
                     anchors.left: parent.left
                     anchors.top: parent.top
                     antialiasing: true
@@ -188,6 +213,7 @@ Item {
 
                 // change the color of the svg icon
                 ColorOverlay {
+                    id: rootDotOverlay
                     anchors.fill: rootDot
                     source: rootDot
                     color: "#FFFFFF"
@@ -207,7 +233,7 @@ Item {
                     width: 10
                     height: 10
                     fillMode: Image.PreserveAspectFit
-                    visible: true
+                    visible: false
                     anchors.left: parent.left
                     anchors.top: parent.top
                     antialiasing: true
@@ -215,6 +241,7 @@ Item {
 
                 // change the color of the svg icon
                 ColorOverlay {
+                    id: endDotOverlay
                     anchors.fill: endDot
                     source: endDot
                     color: "#10e64b"
@@ -233,12 +260,10 @@ Item {
                 property var cord: [0, 0]
 
                 onClicked: {
-                    console.log(paintingArea.mouseX, paintingArea.mouseY)
                     paintingArea.cord = linearMap(paintingArea.mouseX,
                                                   paintingArea.mouseY,
                                                   paintingArea.width,
                                                   paintingArea.height)
-                    console.log(paintingArea.cord[0], paintingArea.cord[1])
                     if (placeRootBtn.isActive) {
                         rootPlaced = true
                         placeRootBtn.isActive = false
@@ -251,6 +276,12 @@ Item {
                 }
             }
         }
+    }
+
+    MessageDialog {
+        id: pathWarningDialog1
+        title: "Warning"
+        text: "Invalid path!\n\nNew path intersecting existing path."
     }
 
     Connections {
@@ -267,15 +298,33 @@ Item {
         }
 
         function onUpdateRoot(x, y) {
-            var cord = reverseMap(x, y, paintingArea.width, paintingArea.height)
-            rootDot.anchors.leftMargin = cord[0] - rootDot.width / 2
-            rootDot.anchors.topMargin = cord[1] - rootDot.height / 2
+            if (x === -1 && y === -1) {
+                rootDotOverlay.visible = false
+                rootPlaced = false
+            } else {
+                rootDotOverlay.visible = true
+                var cord = reverseMap(x, y, paintingArea.width,
+                                      paintingArea.height)
+                rootDot.anchors.leftMargin = cord[0] - rootDot.width / 2
+                rootDot.anchors.topMargin = cord[1] - rootDot.height / 2
+            }
         }
 
         function onUpdateEnd(x, y) {
-            var cord = reverseMap(x, y, paintingArea.width, paintingArea.height)
-            endDot.anchors.leftMargin = cord[0] - endDot.width / 2
-            endDot.anchors.topMargin = cord[1] - endDot.height / 2
+            if (x === -1 && y === -1) {
+                endDotOverlay.visible = false
+            } else {
+                endDotOverlay.visible = true
+                var cord = reverseMap(x, y, paintingArea.width,
+                                      paintingArea.height)
+                endDot.anchors.leftMargin = cord[0] - endDot.width / 2
+                endDot.anchors.topMargin = cord[1] - endDot.height / 2
+            }
+        }
+
+        function onInvalidPathWarning() {
+            console.log("invalid!")
+            pathWarningDialog1.open()
         }
     }
 }
