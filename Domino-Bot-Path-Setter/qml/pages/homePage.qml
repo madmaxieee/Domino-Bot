@@ -33,10 +33,10 @@ Item {
                     placeholderText: "Type your name"
                     Layout.fillWidth: true
                     Keys.onEnterPressed: {
-                        backend.welcomeText(textField.text)
+                        homeBE.welcomeText(textField.text)
                     }
                     Keys.onReturnPressed: {
-                        backend.welcomeText(textField.text)
+                        homeBE.welcomeText(textField.text)
                     }
                 }
 
@@ -48,7 +48,7 @@ Item {
                     Layout.preferredHeight: 40
                     Layout.preferredWidth: 250
                     onClicked: {
-                        backend.welcomeText(textField.text)
+                        homeBE.welcomeText(textField.text)
                     }
                 }
 
@@ -59,9 +59,9 @@ Item {
                     Layout.preferredHeight: 40
                     Layout.preferredWidth: 68
                     // Change Show/Hide Frame
-                    //                    onToggled: {
-                    //                        backend.showHideRectangle(switchHome.checked)
-                    //                    }
+                    onToggled: {
+                        homeBE.showHideRectangle(switchHome.checked)
+                    }
                 }
             }
         }
@@ -118,8 +118,8 @@ Item {
                 clip: true
                 anchors.rightMargin: 10
                 anchors.leftMargin: 10
-                anchors.bottomMargin: 10
-                anchors.topMargin: 10
+                anchors.bottomMargin: 8
+                anchors.topMargin: 12
 
                 //                Text {
                 //                    id: textHome
@@ -134,7 +134,7 @@ Item {
     }
 
     Connections {
-        target: backend
+        target: homeBE
 
         function onSetName(name) {
             labelTextName.text = name
