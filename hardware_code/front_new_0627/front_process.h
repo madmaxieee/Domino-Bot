@@ -7,25 +7,9 @@ SoftwareSerial mySerial(12, 13);
 int target;
 int now;
 int angle;
-char cmd[3]; //存放bt得到的command
+char cmd[9]; //存放bt得到的command
 unsigned long timer=0;
 void get_cmd() {
-  //look for commands
-  for (int i = 0; i < 3; i++)
-  {
-    while (!BT.available())
-    {
-    }
-    cmd[i] = BT.read();
-    Serial.println(cmd[i]);
-  }
-  for(int i=0;i<3;i++)
-  {
-    mySerial.write(cmd[i]);
-  }
-//  mySerial.write(cmd[0]);
-  
-  angle = (cmd[1] - '0') * 10 + (cmd[2] - '0');
   mpu.update();
   now = mpu.getAngleZ();
   //左正右負

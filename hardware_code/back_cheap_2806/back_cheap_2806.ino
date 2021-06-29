@@ -11,10 +11,10 @@ void setup()
 {
   Serial.begin(9600);
   mySerial.begin(9600);
-  stepperL1.setRpm(15);
-  stepperL2.setRpm(15);
-  stepperR1.setRpm(15);
-  stepperR2.setRpm(15);
+  stepperL1.setRpm(13);
+  stepperL2.setRpm(13);
+  stepperR1.setRpm(13);
+  stepperR2.setRpm(13);
 }
 bool checkYaw() { //檢查前板是否回傳's'給後板 (to break Rotate Function)
   char cmd2;
@@ -49,8 +49,17 @@ void rotateRight()
 }
 void rotateLeft()
 {
+  bool zero=0;
   while (1) //轉彎
   {
+    if (checkYaw() == false) //判斷如果前板說角度足夠就會break出去準備前進
+    {
+      if(zero==0)
+      {
+        forward(1);
+      }
+      break;
+    }
     for (int i = 0; i <= 50; i++)
     {
       stepperL1.moveCCW(1);
@@ -58,10 +67,7 @@ void rotateLeft()
       stepperR1.moveCW(1);
       stepperR2.moveCCW(1);
     }
-    if (checkYaw() == false) //判斷如果前板說角度足夠就會break出去準備前進
-    {
-      break;
-    }
+    zero=1;
   }
 }
 
@@ -80,7 +86,7 @@ void forward(int k) //rotate後 繼續前進直到最終目的地
   }
   else if (k == 2)
   {
-    for (int i = 1; i <= 170 -deg*7; i++) //left
+    for (int i = 1; i <= 170 - deg * 7; i++) //left
     {
       stepperL1.moveCW(1);
       stepperL2.moveCW(1);
@@ -90,7 +96,7 @@ void forward(int k) //rotate後 繼續前進直到最終目的地
   }
   else
   {
-    for (int i = 1; i <= 600+deg*7; i++)//right
+    for (int i = 1; i <= 600 + deg * 7; i++) //right
     {
       stepperL1.moveCW(1);
       stepperL2.moveCW(1);
@@ -102,49 +108,32 @@ void forward(int k) //rotate後 繼續前進直到最終目的地
 }
 
 void loop() {
-  //  char cmd = '#';
-  //  if (mySerial.available())
-  //  {
-  //    cmd = mySerial.read();
-  //    Serial.println(cmd);
-  //    if (cmd == '+')
-  //    {
-  //      rotateLeft();
-  //      forward(2);
-  //    }
-  //    if (cmd == '-')
-  //    {
-  //      forward(3);
-  //      rotateRight();
-  //
-  //    }
-  //    if (cmd == '0')
-  //    {
-  //      forward(1);
-  //    }
-  //  }
-  for (int i = 0; i < 3; i++)
+  char cmd = '#';
+  if (mySerial.available())
+  {
+    cmd = mySerial.read();
+    Serial.print(cmd);
+  }
+  if (cmd == 'G')
+  {
+    forward(1);
+  }
+  if (cmd == 'T')
   {
     while (!mySerial.available())
     {
     }
-    cmd[i] = mySerial.read();
+    cmd = mySerial.read();
+    Serial.print(cmd);
+    if (cmd == '+')
+    {
+      rotateLeft();
+      forward(2);
+    }
+    if (cmd == '-')
+    {
+      forward(3);
+      rotateRight();
+    }
   }
-  deg = (cmd[1]-'0') * 10 + (cmd[2]-'0');
-  if (cmd[0] == '+')
-  {
-    rotateLeft();
-    forward(2);
-  }
-  if (cmd[0] == '-')
-  {
-    forward(3);
-    rotateRight();
-
-  }
-  if (cmd[0] == '0')
-  {
-    forward(1);
-  }
-
 }

@@ -2,7 +2,12 @@
 #include"front_process.h"
 CheapStepper down (4, 5, 6, 7);
 boolean moveClockwise = false;
-int in=0;
+int deg[30];
+int dis[30];
+char way[30];
+int in = 0;
+bool flag = 0;
+int total = 0;
 void setup() {
   mySerial.begin(9600);
   Serial.begin(9600);
@@ -17,27 +22,103 @@ void setup() {
   mpu.calcOffsets(); // gyro and accelero
   Serial.println("Done!\n");
   down.setRpm(17);
+  for (int k = 0; !flag; k++)
+  {
+    for (int i = 0; i < 8; i++)
+    {
+      while (!BT.available())
+      {
+      }
+      cmd[i] = BT.read();
+//      Serial.print(int(cmd[i]));
+      if (cmd[i] == 'E')
+      {
+        flag = 1;
+        total = k;
+        break;
+      }
+    }
+    deg[k] = (cmd[1] - '0') * 100 + (cmd[2] - '0') * 10 + (cmd[3] - '0');
+    dis[k] = (cmd[5] - '0') * 100 + (cmd[6] - '0') * 10 + (cmd[7] - '0');
+    way[k] = cmd[0];
+  }
 }
 void loop() {
-  moveClockwise = true;
-  down.moveDegrees(moveClockwise, 430-in);
-  moveClockwise = false;
-  delay(120);
-  down.moveDegrees(moveClockwise, 430);
-  get_cmd();
-  if(cmd[0]=='-')
+  for (int i = 0; i < total; i++)
   {
-    in=180;
-    down.moveDegrees(1, 180);
+    int block = dis[i] / 100;
+    for (int j = 0; j < block; j++)
+    {
+      moveClockwise = true;
+      down.moveDegrees(moveClockwise, 430 - in);
+      moveClockwise = false;
+      delay(120);
+      down.moveDegrees(moveClockwise, 430);
+      if (j != block - 1)
+      {
+        mySerial.write('G');
+      }
+    }
+    if (way[i] == '-')
+    {
+      in = 180;
+      down.moveDegrees(1, 180);
+    }
+    else
+    {
+      in = 0;
+    }
+    mpu.update();
+    now = mpu.getAngleZ();
+    //左正右負
+    if (way[i] == '+')
+    {
+      target = now + deg[i];
+    }
+    else if (way[i] == '-')
+    {
+      target = now - deg[i];
+    }
+    mySerial.write('T');
+    mySerial.write(way[i]);
+    if (way[i]== '+')
+    {
+      while (1)
+      {
+        if (millis() - timer >= 3)
+        {
+          mpu.update();
+          int k = mpu.getAngleZ();
+          Serial.println(k);
+          if (k >= target)
+          {
+            mySerial.write('S');
+            Serial.println("stop");
+            break;
+          }
+          timer = millis();
+        }
+      }
+    }
+    else if (way[i] == '-')
+    {
+      while (1)
+      {
+        if (millis() - timer >= 3)
+        {
+          mpu.update();
+          int k = mpu.getAngleZ();
+          Serial.println(k);
+          if (k <= target)
+          {
+            mySerial.write('S');
+            Serial.println("stop");
+            break;
+          }
+          timer = millis();
+        }
+      }
+    }
   }
-  else
-  {
-    in=0;
-  }
-//  while (!BT.available())
-//  {
-//  }
-//  char cmdd = BT.read();
-//  Serial.println(cmdd);
-  check_angle();
+
 }
