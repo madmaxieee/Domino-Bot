@@ -4,27 +4,19 @@ import sys
 
 from PySide2.QtGui import QGuiApplication
 from PySide2.QtQml import QQmlApplicationEngine
-from PySide2.QtCore import QObject, Slot, Signal, QTimer
 
-
-class MainWindow(QObject):
-    def __init__(self):
-        QObject.__init__(self)
-
-    setName = Signal(str)
-
-    @Slot(str)
-    def welcomeText(self, name):
-        self.setName.emit("Welcome, " + name)
-
+from backend import BackEnd
 
 if __name__ == "__main__":
     app = QGuiApplication(sys.argv)
     engine = QQmlApplicationEngine()
 
+    app.setOrganizationName("zhuang, jia xu")
+    app.setOrganizationDomain("N/A")
+
     # Get Context
-    main = MainWindow()
-    engine.rootContext().setContextProperty("backend", main)
+    be = BackEnd()
+    engine.rootContext().setContextProperty("backend", be)
 
     # Load QML File
     engine.load(os.path.join(os.path.dirname(__file__), "qml/main.qml"))

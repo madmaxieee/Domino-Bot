@@ -2,6 +2,7 @@ import QtQuick 2.15
 import QtQuick.Window 2.15
 import QtQuick.Controls 2.15
 import QtGraphicalEffects 1.15
+import QtQuick.Dialogs 1.3
 
 import "controls/"
 
@@ -24,9 +25,11 @@ Window {
     property int windowState: 0 // 0 normal, 1 maximized
     property int windowMargin: 10 // 10 normal, 0 maximized
 
+    property bool isFileOpened: false
+
     // function holder
     QtObject {
-        id: internal
+        id: mainInternal
 
         function resetResizer() {
             resizeTop.visible = true
@@ -65,10 +68,11 @@ Window {
                 windowState = 0
                 windowMargin = 10
 
-                internal.resetResizer()
+                mainInternal.resetResizer()
 
                 btnMaximzie.btnIconSource = "../img/svg/maximize_icon.svg"
             }
+            backend.resize()
         }
 
         function maximizeDrag() {
@@ -77,15 +81,16 @@ Window {
                 windowState = 0
                 windowMargin = 10
                 btnMaximzie.btnIconSource = "../img/svg/maximize_icon.svg"
-                internal.resetResizer()
+                mainInternal.resetResizer()
             }
+            backend.resize()
         }
 
         function restoreMargin() {
             windowState = 0
             windowMargin = 10
 
-            internal.resetResizer()
+            mainInternal.resetResizer()
         }
     }
 
@@ -175,7 +180,7 @@ Window {
                     DragHandler {
                         onActiveChanged: if (active) {
                                              mainWindow.startSystemMove()
-                                             internal.maximizeDrag()
+                                             mainInternal.maximizeDrag()
                                          }
                     }
 
@@ -221,14 +226,14 @@ Window {
                         id: btnMinimize
                         onClicked: {
                             mainWindow.showMinimized()
-                            internal.restoreMargin()
+                            mainInternal.restoreMargin()
                         }
                     }
 
                     TopBarBtn {
                         id: btnMaximzie
                         btnIconSource: "../img/svg/maximize_icon.svg"
-                        onClicked: internal.maximizeRestore()
+                        onClicked: mainInternal.maximizeRestore()
                     }
 
                     TopBarBtn {
@@ -277,25 +282,8 @@ Window {
                         anchors.left: parent.left
                         anchors.top: parent.top
                         anchors.bottom: parent.bottom
-                        anchors.bottomMargin: 183
+                        anchors.bottomMargin: 160
                         clip: true
-
-                        LeftMenuBtn {
-                            id: btnHome
-                            width: sideBar.width
-                            text: qsTr("Home")
-
-                            onClicked: {
-                                btnHome.isActiveMenu = true
-                                homePageView.visible = true
-
-                                btnSettings.isActiveMenu = false
-                                settingsPageView.visible = false
-
-                                btnEdit.isActiveMenu = false
-                                edittingPageView.visible = false
-                            }
-                        }
 
                         LeftMenuBtn {
                             id: btnOpen
@@ -303,6 +291,79 @@ Window {
                             text: qsTr("Open")
                             btnIconSource: "../img/svg/open_icon.svg"
                             isActiveMenu: false
+
+                            onClicked: {
+                                fileOpen.open()
+                            }
+
+                            FileDialog {
+                                id: fileOpen
+                                title: "Please choose a file"
+                                folder: shortcuts.desktop
+                                selectMultiple: false
+                                nameFilters: ["SVG File (*.svg)"]
+                                onAccepted: {
+                                    backend.openFile(fileOpen.fileUrl)
+
+                                    btnSettings.isActiveMenu = false
+                                    settingsPageView.visible = false
+
+                                    btnEdit.isActiveMenu = true
+                                    edittingPageView.visible = true
+                                }
+                            }
+                        }
+
+                        LeftMenuBtn {
+                            id: btnNew
+                            width: sideBar.width
+                            text: qsTr("New")
+                            btnIconSource: "../img/svg/new_file_icon.svg"
+                            isActiveMenu: false
+
+                            property string newFileName: "Untitled"
+
+                            onClicked: {
+                                fileNameDialog.open()
+                            }
+
+                            Dialog {
+                                id: fileNameDialog
+                                title: "Create new file"
+                                CustomTextField {
+                                    id: fileNameTextField
+                                    placeholderText: "Enter file name"
+                                    Keys.onEnterPressed: {
+                                        btnNew.newFileName = fileNameTextField.text
+                                    }
+                                    Keys.onReturnPressed: {
+                                        btnNew.newFileName = fileNameTextField.text
+                                    }
+                                }
+                                onAccepted: {
+                                    btnNew.newFileName = fileNameTextField.text
+                                    fileNew.open()
+                                }
+                            }
+
+                            FileDialog {
+                                id: fileNew
+                                title: "Please choose a folder"
+                                folder: shortcuts.desktop
+                                selectMultiple: false
+                                selectFolder: true
+                                onAccepted: {
+                                    backend.openFile(
+                                                fileNew.fileUrl.toString(
+                                                    ) + '/' + btnNew.newFileName + ".svg")
+
+                                    btnSettings.isActiveMenu = false
+                                    settingsPageView.visible = false
+
+                                    btnEdit.isActiveMenu = true
+                                    edittingPageView.visible = true
+                                }
+                            }
                         }
 
                         LeftMenuBtn {
@@ -311,24 +372,52 @@ Window {
                             text: qsTr("Save")
                             isActiveMenu: false
                             btnIconSource: "../img/svg/save_icon.svg"
+
+                            onClicked: {
+                                backend.saveFile()
+                            }
+
+                            MessageDialog {
+                                id: saveDislog
+                                title: ""
+                                text: "File successfully saved!"
+                            }
                         }
 
                         LeftMenuBtn {
                             id: btnEdit
                             width: sideBar.width
                             text: qsTr("Edit")
+                            iconWidth: 16
+                            iconHeight: 16
                             isActiveMenu: false
-                            btnIconSource: "../img/svg/save_icon.svg"
+                            btnIconSource: "../img/svg/edit_icon.svg"
 
                             onClicked: {
-                                btnHome.isActiveMenu = false
-                                homePageView.visible = false
+                                backend.checkFile()
 
-                                btnSettings.isActiveMenu = false
-                                settingsPageView.visible = false
+                                if (isFileOpened) {
 
-                                btnEdit.isActiveMenu = true
-                                edittingPageView.visible = true
+                                    btnSettings.isActiveMenu = false
+                                    settingsPageView.visible = false
+
+                                    btnEdit.isActiveMenu = true
+                                    edittingPageView.visible = true
+                                }
+                            }
+                        }
+
+                        LeftMenuBtn {
+                            id: btnConvert
+                            width: sideBar.width
+                            text: qsTr("Convert")
+                            iconWidth: 16
+                            iconHeight: 16
+                            isActiveMenu: false
+                            btnIconSource: "../img/svg/export_icon.svg"
+
+                            onClicked: {
+
                             }
                         }
                     }
@@ -347,10 +436,6 @@ Window {
                             btnHome.isActiveMenu = false
                             btnSettings.isActiveMenu = true
                             btnEdit.isActiveMenu = false
-
-                            //                            stackView.push(Qt.resolvedUrl(
-                            //                                               "pages/SettingsPage.qml"))
-                            homePageView.visible = false
                             settingsPageView.visible = true
                             edittingPageView.visible = false
                         }
@@ -367,18 +452,6 @@ Window {
                     clip: true
                     anchors.bottomMargin: 25
                     anchors.leftMargin: 0
-
-                    //                    StackView {
-                    //                        id: stackView
-                    //                        anchors.fill: parent
-                    //                        initialItem: Qt.resolvedUrl("pages/homePage.qml")
-                    //                    }
-                    Loader {
-                        id: homePageView
-                        anchors.fill: parent
-                        source: Qt.resolvedUrl("pages/homePage.qml")
-                        visible: true
-                    }
 
                     Loader {
                         id: settingsPageView
@@ -597,4 +670,19 @@ Window {
                              }
         }
     }
+
+    Connections {
+        target: backend
+
+        function onCheckFileOpened(b) {
+            isFileOpened = b
+        }
+    }
 }
+
+/*##^##
+Designer {
+    D{i:0;formeditorZoom:0.75}
+}
+##^##*/
+
