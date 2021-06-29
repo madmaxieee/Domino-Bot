@@ -34,6 +34,10 @@ void setup()
   pinMode(15, OUTPUT);
   pinMode(16, OUTPUT);
   pinMode(17, OUTPUT);
+  stepperL1.setSpeed(10); //設定速度 0-15
+  stepperR1.setSpeed(10);
+  stepperL2.setSpeed(10);
+  stepperR2.setSpeed(10);
 
   //Serial.begin(9600);
 }
@@ -340,39 +344,34 @@ bool checkYaw() { //檢查前板是否回傳's'給後板 (to break Rotate Functi
 
 void rotateLeft()
 {
-  stepperL1.setSpeed(15); //設定速度 0-15
-  stepperR1.setSpeed(15);
-  stepperL2.setSpeed(15);
-  stepperR2.setSpeed(15);
-
   while (1) //轉彎
   {
+    for (int i = 0; i <= 50; i++)
+    {
+      stepperL1.step(1);
+      stepperL2.step(-1);
+      stepperR1.step(-1);
+      stepperR2.step(1);
+    }
     if (checkYaw() == false) //判斷如果前板說角度足夠就會break出去準備前進
     {
       break;
     }
-    stepperL1.step(-1);
-    stepperL2.step(-1);
-    stepperR1.step(1);
-    stepperR2.step(1);
   }
 
 }
 
 void rotateRight()
 {
-  stepperL1.setSpeed(15); //設定速度 0-15
-  stepperR1.setSpeed(15);
-  stepperL2.setSpeed(15);
-  stepperR2.setSpeed(15);
-
   while (1) //轉彎
   {
-    stepperL1.step(100);
-    stepperL2.step(100);
-    stepperR1.step(-100);
-    stepperR2.step(-10);
-
+    for (int i = 0; i <= 50; i++)
+    {
+      stepperL1.step(-1);
+      stepperL2.step(1);
+      stepperR1.step(1);
+      stepperR2.step(-1);
+    }
     if (checkYaw() == false) //判斷如果前板說角度足夠就會break出去準備前進
     {
       break;
@@ -383,17 +382,17 @@ void rotateRight()
 void forward() //rotate後 繼續前進直到最終目的地
 {
   //一步大概是5.625度 一圈是step2048的話 就直接 換算得到一百步是3200
-  for (int i = 1; i <= 3200; i++)
+  for (int i = 1; i <= 1000; i++)
   {
-    stepperL1.step(1);
-    stepperL2.step(-1);
+    stepperL1.step(-1);
+    stepperL2.step(1);
     stepperR1.step(-1);
     stepperR2.step(1);
   }
 }
 
 void loop() {
-  char cmd;
+  char cmd='#';
   if (mySerial.available())
   {
     cmd = mySerial.read();
@@ -401,11 +400,15 @@ void loop() {
     if (cmd == '+')
     {
       rotateLeft();
-      forward();
+      //forward();
     }
     if (cmd == '-')
     {
       rotateRight();
+      //forward();
+    }
+    if(cmd=='0')
+    {
       forward();
     }
   }

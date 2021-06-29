@@ -21,7 +21,7 @@ void loop() {
   moveClockwise = true;
   down.moveDegrees(moveClockwise, 370);
   moveClockwise = false;
-  delay(30);
+  delay(50);
   down.moveDegrees(moveClockwise, 370);
   get_cmd();
 //  while (!BT.available())
