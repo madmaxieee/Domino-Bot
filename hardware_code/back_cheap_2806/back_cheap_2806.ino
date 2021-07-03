@@ -86,7 +86,7 @@ void forward(int k) //rotate後 繼續前進直到最終目的地
   }
   else if (k == 2)
   {
-    for (int i = 1; i <= 170 - deg * 7; i++) //left
+    for (int i = 1; i <= 170 ; i++) //left
     {
       stepperL1.moveCW(1);
       stepperL2.moveCW(1);
@@ -96,7 +96,7 @@ void forward(int k) //rotate後 繼續前進直到最終目的地
   }
   else
   {
-    for (int i = 1; i <= 600 + deg * 7; i++) //right
+    for (int i = 1; i <= 1200; i++) //right
     {
       stepperL1.moveCW(1);
       stepperL2.moveCW(1);

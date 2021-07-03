@@ -13,10 +13,10 @@ void loop() {
     moveClockwise = true;   
 //    up.moveDegrees (moveClockwise, 370);
 //    delay(30);
-    down.moveDegrees(moveClockwise,370); 
+    down.moveDegrees(moveClockwise,450); 
     moveClockwise = false;    
-    delay(30);
-    down.moveDegrees(moveClockwise,370);
+    delay(120);
+    down.moveDegrees(moveClockwise,450);
 //    up.moveDegrees (moveClockwise, 370);
     timer=millis()-timer;
     Serial.println(timer);

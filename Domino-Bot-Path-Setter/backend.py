@@ -184,7 +184,7 @@ class BackEnd(QObject):
         with open(command_path, 'r') as f:
             raw_command = f.readlines()
 
-        raw_command.append('e')
+        raw_command.append('E')
 
         for command in raw_command:
             for char in command:
